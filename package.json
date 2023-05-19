@@ -10,11 +10,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "@firebase/auth": "^0.23.2",
-    "@firebase/firestore": "^3.12.0",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/stack": "^6.3.16",
-    "base-64": "^1.0.0",
     "firebase": "^9.22.0",
     "react": "18.2.0",
     "react-native": "0.71.8",
