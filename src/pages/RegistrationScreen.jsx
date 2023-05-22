@@ -10,15 +10,23 @@ import {
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {auth, db} from '../firebase/config';
-import {createUserWithEmailAndPassword} from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  getAuth,
+} from 'firebase/auth';
 import {doc, setDoc} from 'firebase/firestore';
+import actionCreators from '../store/actionCreators';
+import {useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 
 export default function RegistrationScreen({navigation}) {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState('');
-
+  let dispatch = useDispatch();
+  let state = useSelector(store => store.auth);
   const onFooterLinkPress = () => {
     navigation.navigate('Login');
   };
@@ -26,20 +34,17 @@ export default function RegistrationScreen({navigation}) {
   const onRegisterPress = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
+        const auth = getAuth();
+        updateProfile(auth.currentUser, {displayName: fullName});
         setUser(userCredential);
         const data = {
+          uid: userCredential.user.uid,
           name: fullName,
           email: userCredential.user.email,
-          uid: userCredential.user.uid,
         };
+        dispatch(actionCreators.setAuth(...data));
         const usersRef = doc(db, 'users', userCredential.user.uid); // Use the user's UID as the document ID
-        setDoc(usersRef, data)
-          .then(() => {
-            console.log('Document successfully written!');
-          })
-          .catch(error => {
-            console.error('Error writing document: ', error);
-          });
+        setDoc(usersRef, data);
       })
       .catch(error => {
         console.log('oopsie', error);
@@ -51,7 +56,7 @@ export default function RegistrationScreen({navigation}) {
       <KeyboardAwareScrollView
         style={{flex: 1, width: '100%'}}
         keyboardShouldPersistTaps="always">
-        <Text>{true && JSON.stringify(user)}</Text>
+        <Text>{JSON.stringify(state.auth)}</Text>
         <TextInput
           style={styles.input}
           placeholder="Full Name"
