@@ -2,7 +2,6 @@ import actionTypes from './actionTypes';
 
 const initialState = {
   auth: {
-    isLoggedIn: false,
     uid: '',
     name: '',
     email: '',
@@ -23,6 +22,13 @@ function reducer(state = initialState, action) {
           },
           ...state.todos,
         },
+      };
+    }
+    case actionTypes.SET_AUTH: {
+      console.log(action.payload, 'ughhhhhhhhhhhhhhhhhh');
+      return {
+        ...state,
+        auth: {...action.payload},
       };
     }
     default:
