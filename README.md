@@ -23,8 +23,8 @@ Before running the application, make sure you have the following installed:
 2. Install the dependencies by running `npm install` in the project directory.
 3. Create a Firebase project and enable Authentication and Firestore.
 4. Obtain your Firebase project's configuration details.
-5. Paste the Firebase configuration details into the `firebaseConfig.js` file in the project.
-6. Start the application by running `expo start` in the project directory.
+5. Paste the Firebase configuration details into the `keys.js` file in the project.
+6. Start the application by running `npm start` in the project directory.
 7. Open the Expo app on your mobile device and scan the QR code displayed in the terminal or in the browser.
 
 ## Technologies Used
@@ -32,3 +32,4 @@ Before running the application, make sure you have the following installed:
 - React Native
 - Firebase Authentication
 - Firebase Cloud Firestore
+- Redux Persist
