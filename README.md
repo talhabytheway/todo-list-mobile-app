@@ -25,11 +25,11 @@ Before running the application, make sure you have the following installed:
 4. Obtain your Firebase project's configuration details.
 5. Paste the Firebase configuration details into the `keys.js` file in the project.
 6. Start the application by running `npm start` in the project directory.
-7. Open the Expo app on your mobile device and scan the QR code displayed in the terminal or in the browser.
+7. Install the app in vm or on physicall device.
 
 ## Technologies Used
 
 - React Native
 - Firebase Authentication
 - Firebase Cloud Firestore
-- Redux Persist
+- Redux w/ Persist
