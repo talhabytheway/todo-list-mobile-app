@@ -15,18 +15,17 @@ import {
   updateProfile,
   getAuth,
 } from 'firebase/auth';
-import {doc, setDoc} from 'firebase/firestore';
+import {doc, setDoc, addDoc, collection} from 'firebase/firestore';
 import actionCreators from '../store/actionCreators';
 import {useDispatch} from 'react-redux';
-import {useSelector} from 'react-redux';
+import Toast from 'react-native-toast-message';
 
 export default function RegistrationScreen({navigation}) {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState('');
   let dispatch = useDispatch();
-  let state = useSelector(store => store.auth);
+
   const onFooterLinkPress = () => {
     navigation.navigate('Login');
   };
@@ -36,19 +35,48 @@ export default function RegistrationScreen({navigation}) {
       .then(userCredential => {
         const auth = getAuth();
         updateProfile(auth.currentUser, {displayName: fullName});
-        setUser(userCredential);
         const data = {
           uid: userCredential.user.uid,
           name: fullName,
           email: userCredential.user.email,
         };
-        dispatch(actionCreators.setAuth(...data));
-        const usersRef = doc(db, 'users', userCredential.user.uid); // Use the user's UID as the document ID
+        dispatch(
+          actionCreators.setAuth(
+            userCredential.user.uid,
+            fullName,
+            userCredential.user.email,
+          ),
+        );
+        const usersRef = doc(db, 'users', userCredential.user.uid);
         setDoc(usersRef, data);
+
+        addDoc(collection(db, `users/${userCredential.user.uid}/todos`), {
+          title: 'Sample Task',
+          description: 'Task Desc',
+          uid: userCredential.user.uid,
+        });
+      })
+      .finally(() => {
+        Toast.show({
+          type: 'success',
+          text1: `Signed up Successfully ✅`,
+        });
       })
       .catch(error => {
-        console.log('oopsie', error);
-        setUser(error);
+        let code = error.code.split('/') || code;
+        console.error(`${code[0]} error ${code[1].replace(/-/g, ' ')}`);
+        Toast.show(
+          error.code
+            ? {
+                type: 'error',
+                text1: `${code[0]} error ⚠️`,
+                text2: `${code[1].replace(/-/g, ' ')}`,
+              }
+            : {
+                type: 'error',
+                text1: error,
+              },
+        );
       });
   };
   return (
@@ -56,7 +84,6 @@ export default function RegistrationScreen({navigation}) {
       <KeyboardAwareScrollView
         style={{flex: 1, width: '100%'}}
         keyboardShouldPersistTaps="always">
-        <Text>{JSON.stringify(state.auth)}</Text>
         <TextInput
           style={styles.input}
           placeholder="Full Name"
