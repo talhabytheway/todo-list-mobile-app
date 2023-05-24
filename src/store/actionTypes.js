@@ -3,4 +3,6 @@ export default {
   ADD_TASK: 'ADD_TASK',
   EDIT_TASK: 'EDIT_TASK',
   REMOVE_TASK: 'REMOVE_TASK',
+  SIGN_OUT: 'SIGN_OUT',
+  ADD_TASKS: 'ADD_TASKS',
 };
