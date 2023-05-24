@@ -10,17 +10,25 @@ export default {
     },
   }),
 
-  editTask: (uid, taskId, name, desc) => ({
-    type: actionTypes.EDIT_TASK,
-    payload: {uid, taskId, name, desc},
+  setTasks: tasks => ({
+    type: actionTypes.ADD_TASKS,
+    payload: tasks,
   }),
 
-  removeTask: (uid, taskId) => ({
+  editTask: (taskId, name, desc) => ({
+    type: actionTypes.EDIT_TASK,
+    payload: {taskId, name, desc},
+  }),
+
+  removeTask: taskId => ({
     type: actionTypes.REMOVE_TASK,
-    payload: {uid, taskId},
+    payload: taskId,
   }),
   setAuth: (uid, name, email) => ({
     type: actionTypes.SET_AUTH,
     payload: {uid, name, email},
+  }),
+  signout: () => ({
+    type: actionTypes.SIGN_OUT,
   }),
 };

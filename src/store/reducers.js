@@ -24,11 +24,42 @@ function reducer(state = initialState, action) {
         },
       };
     }
+    case actionTypes.ADD_TASKS: {
+      return {
+        ...state,
+        todos: {
+          ...action.payload,
+        },
+      };
+    }
     case actionTypes.SET_AUTH: {
-      console.log(action.payload, 'ughhhhhhhhhhhhhhhhhh');
       return {
         ...state,
         auth: {...action.payload},
+      };
+    }
+    case actionTypes.REMOVE_TASK: {
+      let id = action.payload;
+      const deepCopy = JSON.parse(JSON.stringify(state));
+      delete deepCopy.todos[id];
+      return deepCopy;
+    }
+    case actionTypes.EDIT_TASK: {
+      let {taskId, name, desc} = action.payload;
+      const deepCopy = JSON.parse(JSON.stringify(state));
+      deepCopy.todos[taskId] = {
+        name,
+        description,
+      };
+    }
+    case actionTypes.SIGN_OUT: {
+      return {
+        ...state,
+        auth: {
+          uid: '',
+          name: '',
+          email: '',
+        },
       };
     }
     default:
