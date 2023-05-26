@@ -15,9 +15,9 @@ export default {
     payload: tasks,
   }),
 
-  editTask: (taskId, name, desc) => ({
+  editTask: (taskId, title, description) => ({
     type: actionTypes.EDIT_TASK,
-    payload: {taskId, name, desc},
+    payload: {taskId, title, description},
   }),
 
   removeTask: taskId => ({
