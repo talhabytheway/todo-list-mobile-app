@@ -45,11 +45,14 @@ function reducer(state = initialState, action) {
       return deepCopy;
     }
     case actionTypes.EDIT_TASK: {
-      let {taskId, name, desc} = action.payload;
+      let {taskId, title, description} = action.payload;
       const deepCopy = JSON.parse(JSON.stringify(state));
       deepCopy.todos[taskId] = {
-        name,
+        title,
         description,
+      };
+      return {
+        ...deepCopy,
       };
     }
     case actionTypes.SIGN_OUT: {
