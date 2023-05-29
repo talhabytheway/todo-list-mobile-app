@@ -74,11 +74,11 @@ const Home = ({navigation}) => {
         </TouchableOpacity>
       </View>
       {loading ? (
-        <View>
-          <Text>Loading</Text>
+        <View style={styles.loading}>
+          <Text style={styles.todoTitle}>Loading</Text>
         </View>
       ) : (
-        <ScrollView>
+        <ScrollView style={styles.scroll}>
           {Object.keys(state.todos).map(key => (
             <View key={key} style={styles.cardPar}>
               <View style={styles.textPar}>
@@ -90,11 +90,24 @@ const Home = ({navigation}) => {
                   {state.todos[key].description}
                 </Text>
               </View>
-              <TouchableOpacity hitSlop={24}>
+              <TouchableOpacity
+                hitSlop={24}
+                onPress={() =>
+                  navigation.navigate('ViewTask', {
+                    id: key,
+                    title: state.todos[key].title,
+                    description: state.todos[key].description,
+                  })
+                }>
                 <Arrow />
               </TouchableOpacity>
             </View>
           ))}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('AddTask')}
+            style={styles.cardPar}>
+            <Text style={styles.todoTitle}>+ Add Task</Text>
+          </TouchableOpacity>
         </ScrollView>
       )}
     </View>
@@ -135,12 +148,12 @@ const styles = StyleSheet.create({
     paddingLeft: ratios.widthPixel(16),
     paddingRight: ratios.widthPixel(12),
     paddingVertical: ratios.widthPixel(12),
-    elevation: 12,
+    elevation: 8,
     backgroundColor: colors.beige,
     shadowColor: '#000',
-    shadowOffset: {width: ratios.widthPixel(4), height: ratios.widthPixel(4)},
+    shadowOffset: {width: ratios.widthPixel(2), height: ratios.widthPixel(2)},
     shadowOpacity: 0.25,
-    shadowRadius: ratios.widthPixel(20),
+    shadowRadius: ratios.widthPixel(16),
     borderColor: colors.pink,
     borderWidth: ratios.widthPixel(1),
     borderRadius: ratios.widthPixel(12),
@@ -149,7 +162,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textPar: {
-    flexGrow: 1,
+    width: '90%',
   },
   todoTitle: {
     fontFamily: fonts.semi,
@@ -160,5 +173,11 @@ const styles = StyleSheet.create({
     fontFamily: fonts.reg,
     fontSize: ratios.fontPixel(15),
     color: colors.brown,
+  },
+  loading: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: ratios.widthPixel(100),
   },
 });
