@@ -28,6 +28,10 @@ const Home = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
+    getTodos();
+  }, []);
+
+  function getTodos() {
     setLoading(true);
     let todos = {};
     getDocs(collection(db, `users/${state.auth.uid}/todos`))
@@ -41,8 +45,21 @@ const Home = ({navigation}) => {
         });
         dispatch(actionCreators.setTasks(todos));
       })
-      .finally(() => setLoading(false));
-  }, []);
+      .finally(() => setLoading(false))
+      .catch(error => {
+        let code = error?.code.split('/');
+        error.code !== undefined
+          ? Toast.show({
+              type: 'error',
+              text1: `${code[0]} error ⚠️`,
+              text2: `${code[1].replace(/-/g, ' ')}`,
+            })
+          : Toast.show({
+              type: 'error',
+              text1: error,
+            });
+      });
+  }
 
   function signout() {
     signOut(auth)
@@ -68,6 +85,15 @@ const Home = ({navigation}) => {
   return (
     <View style={styles.bg}>
       <View style={styles.nav}>
+        <TouchableOpacity onPress={getTodos}>
+          <Text
+            style={[
+              styles.mainHeading,
+              {flexGrow: 0, fontSize: ratios.fontPixel(37)},
+            ]}>
+            ↻
+          </Text>
+        </TouchableOpacity>
         <Text style={styles.mainHeading}>Your Todos</Text>
         <TouchableOpacity style={styles.proIcon} onPress={signout}>
           <ProfileIcon />
@@ -104,7 +130,13 @@ const Home = ({navigation}) => {
             </View>
           ))}
           <TouchableOpacity
-            onPress={() => navigation.navigate('AddTask')}
+            onPress={() =>
+              navigation.navigate('AddTask', {
+                id: '',
+                title: '',
+                description: '',
+              })
+            }
             style={styles.cardPar}>
             <Text style={styles.todoTitle}>+ Add Task</Text>
           </TouchableOpacity>

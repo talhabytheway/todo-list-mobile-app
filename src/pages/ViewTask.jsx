@@ -61,7 +61,11 @@ const ViewTask = ({navigation, route}) => {
         <Text style={styles.todoDesc}>{description}</Text>
       </ScrollView>
       <View style={styles.btnParCont}>
-        <TouchableOpacity style={styles.btnPar}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('AddTask', {id, title, description})
+          }
+          style={styles.btnPar}>
           <Text style={styles.btnTxt}>Edit Task</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={removeTask} style={styles.btnPar}>
