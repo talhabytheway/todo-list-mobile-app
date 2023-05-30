@@ -118,7 +118,6 @@ export default function RegistrationScreen({navigation}) {
       })
       .catch(error => {
         let code = error.code.split('/') || code;
-        console.error(`${code[0]} error ${code[1].replace(/-/g, ' ')}`);
         Toast.show(
           error.code
             ? {
