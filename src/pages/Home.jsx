@@ -3,9 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   StatusBar,
-  FlatList,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
@@ -16,7 +14,6 @@ import {auth, db} from '../firebase/config';
 import {signOut} from 'firebase/auth';
 import {collection, getDocs} from 'firebase/firestore';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
-import ProfileIcon from '../assets/svgs/ProfileIcon';
 import Arrow from '../assets/svgs/Arrow';
 
 import colors from '../constants/colors';
@@ -85,7 +82,7 @@ const Home = ({navigation}) => {
   return (
     <View style={styles.bg}>
       <View style={styles.nav}>
-        <TouchableOpacity onPress={getTodos}>
+        <TouchableOpacity style={styles.even} onPress={getTodos}>
           <Text
             style={[
               styles.mainHeading,
@@ -94,9 +91,9 @@ const Home = ({navigation}) => {
             ↻
           </Text>
         </TouchableOpacity>
-        <Text style={styles.mainHeading}>Your Todos</Text>
-        <TouchableOpacity style={styles.proIcon} onPress={signout}>
-          <ProfileIcon />
+        <Text style={styles.mainHeading}>Tasks</Text>
+        <TouchableOpacity style={styles.mainCtaPar} onPress={signout}>
+          <Text style={styles.mainCta}>Sign Out</Text>
         </TouchableOpacity>
       </View>
       {loading ? (
@@ -158,14 +155,13 @@ const styles = StyleSheet.create({
     paddingTop: StatusBar.currentHeight,
     backgroundColor: colors.pink + 'ee',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     height: ratios.heightPixel(100),
     alignItems: 'center',
   },
   mainHeading: {
     fontFamily: fonts.semi,
-    fontSize: ratios.fontPixel(31),
-    color: colors.brown,
+    fontSize: ratios.fontPixel(27),
+    color: colors.beige,
     textAlign: 'center',
     flexGrow: 1,
   },
@@ -211,5 +207,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: ratios.widthPixel(100),
+  },
+  mainCtaPar: {
+    backgroundColor: colors.beige,
+    paddingHorizontal: ratios.widthPixel(16),
+    paddingVertical: ratios.widthPixel(8),
+    borderRadius: ratios.widthPixel(7),
+  },
+  mainCta: {
+    fontFamily: fonts.semi,
+    fontSize: ratios.fontPixel(14),
+    color: colors.brown,
+  },
+  even: {
+    marginRight: ratios.widthPixel(48),
   },
 });
