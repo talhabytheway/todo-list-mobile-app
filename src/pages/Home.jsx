@@ -103,7 +103,17 @@ const Home = ({navigation}) => {
       ) : (
         <ScrollView style={styles.scroll}>
           {Object.keys(state.todos).map(key => (
-            <View key={key} style={styles.cardPar}>
+            <TouchableOpacity
+              key={key}
+              style={styles.cardPar}
+              hitSlop={24}
+              onPress={() =>
+                navigation.navigate('ViewTask', {
+                  id: key,
+                  title: state.todos[key].title,
+                  description: state.todos[key].description,
+                })
+              }>
               <View style={styles.textPar}>
                 <Text style={styles.todoTitle}>{state.todos[key].title}</Text>
                 <Text
@@ -113,32 +123,22 @@ const Home = ({navigation}) => {
                   {state.todos[key].description}
                 </Text>
               </View>
-              <TouchableOpacity
-                hitSlop={24}
-                onPress={() =>
-                  navigation.navigate('ViewTask', {
-                    id: key,
-                    title: state.todos[key].title,
-                    description: state.todos[key].description,
-                  })
-                }>
-                <Arrow />
-              </TouchableOpacity>
-            </View>
+              <Arrow />
+            </TouchableOpacity>
           ))}
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('AddTask', {
-                id: '',
-                title: '',
-                description: '',
-              })
-            }
-            style={styles.cardPar}>
-            <Text style={styles.todoTitle}>+ Add Task</Text>
-          </TouchableOpacity>
         </ScrollView>
       )}
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('AddTask', {
+            id: '',
+            title: '',
+            description: '',
+          })
+        }
+        style={styles.addBtnPar}>
+        <Text style={styles.addBtnTxt}>+</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -221,5 +221,25 @@ const styles = StyleSheet.create({
   },
   even: {
     marginRight: ratios.widthPixel(48),
+  },
+  scroll: {
+    marginTop: ratios.widthPixel(8),
+  },
+  addBtnPar: {
+    position: 'absolute',
+    backgroundColor: colors.pink,
+    bottom: ratios.widthPixel(12),
+    right: ratios.widthPixel(12),
+    width: ratios.widthPixel(54),
+    height: ratios.widthPixel(54),
+    borderRadius: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  addBtnTxt: {
+    fontFamily: fonts.semi,
+    fontSize: ratios.fontPixel(27),
+    color: colors.beige,
+    lineHeight: ratios.fontPixel(36),
   },
 });
