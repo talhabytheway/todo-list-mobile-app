@@ -58,7 +58,7 @@ const AddTask = ({navigation, route}) => {
     }
   }
   function editTask() {
-    if (task == '' || desc == '') {
+    if (task.trim() == '' || desc.trim() == '') {
       Toast.show({
         type: 'info',
         text1: `Title and Description fields can not be empty ⚠️`,
